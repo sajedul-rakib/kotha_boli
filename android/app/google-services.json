@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "61441784068",
+    "project_id": "kotha-boli-c5e74",
+    "storage_bucket": "kotha-boli-c5e74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61441784068:android:4768b95d8cf2698717f851",
+        "android_client_info": {
+          "package_name": "com.example.kotha_boli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61441784068-qhuk7jkobnmt7vnk0t8dp5roue2qpnj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6D_Tsf3W0b9T8PpW_HTZE6XaH_WMj2MI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61441784068-qhuk7jkobnmt7vnk0t8dp5roue2qpnj5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
