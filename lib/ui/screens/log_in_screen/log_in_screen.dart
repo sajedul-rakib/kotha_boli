@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kotha_boli/routes/route_name/route_names.dart';
+import 'package:kotha_boli/ui/screens/home_screen/home_screen.dart';
 import 'package:kotha_boli/ui/screens/log_in_screen/controller.dart';
 import 'package:kotha_boli/ui/screens/widgets/app_text_form_field.dart';
 import 'package:kotha_boli/utils/colors/app_color/app_color.dart';
@@ -26,18 +29,40 @@ class LogInScreen extends GetView<LogInScreenController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: CircleAvatar(
-                      child: Icon(
-                        CupertinoIcons.person,
-                        color: Colors.white,
-                        size: 80,
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: ()async{
+                     final response=await controller.signInWithGoogle();
+                     if(response){
+                       Get.offAllNamed(RouteNames.MAINBOTTOMNAVIGATION);
+                     }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      width: 200,
+                      height: 60,
+                      child: const Center(
+                        child: Text(
+                          "Log in with Google",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -60,8 +85,8 @@ class LogInScreen extends GetView<LogInScreenController> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      controller.logIn(
+                    onPressed: () async {
+                     await controller.logIn(
                           email: _emailETController.text.trim(),
                           password: _passwordETController.text);
                     },

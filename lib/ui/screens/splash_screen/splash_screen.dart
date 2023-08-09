@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +131,7 @@ class SplashScreen extends GetView<SplashScreenController> {
                                         MaterialStatePropertyAll(Colors.cyan),
                                     elevation: MaterialStatePropertyAll(0)),
                                 onPressed: () async {
-                                  controller.signInWithGoogle();
+                                  // controller.signInWithGoogle();
                                 },
                                 child: const Row(
                                   mainAxisAlignment:

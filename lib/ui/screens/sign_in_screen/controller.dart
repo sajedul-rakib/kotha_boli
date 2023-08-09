@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kotha_boli/ui/screens/sign_in_screen/state.dart';
+import 'package:kotha_boli/user/user.dart';
 
 class SignInScreenController extends GetxController {
   final state = SignInScreenState();
@@ -26,7 +27,8 @@ class SignInScreenController extends GetxController {
           'firstName': firstName,
           'lastName': lastName,
           'email': email,
-          'mobile': mobile
+          'mobile': mobile,
+          'createAt':DateTime.now()
         }).then((value) {
           Get.showSnackbar(GetSnackBar(
             title: 'Create user successfully',

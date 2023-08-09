@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kotha_boli/routes/route_name/route_names.dart';
 import 'package:kotha_boli/ui/screens/sign_in_screen/controller.dart';
 import 'package:kotha_boli/utils/colors/app_color/app_color.dart';
@@ -8,16 +11,19 @@ import 'package:get/get.dart';
 import '../widgets/app_text_form_field.dart';
 
 class SignInScreen extends GetView<SignInScreenController> {
-  SignInScreen({super.key});
+   SignInScreen({super.key});
 
   final TextEditingController _emailETController = TextEditingController();
   final TextEditingController _passwordETController = TextEditingController();
   final TextEditingController _firstNameETController = TextEditingController();
   final TextEditingController _lastNameETController = TextEditingController();
   final TextEditingController _mobileETController = TextEditingController();
+  final TextEditingController _photoETController = TextEditingController();
   final TextEditingController _confirmPasswordETController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  XFile? pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +53,138 @@ class SignInScreen extends GetView<SignInScreenController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                final ImagePicker picker = ImagePicker();
+                                AlertDialog(
+                                    title: const Text('Take photo from: '),
+                                    content: Column(
+                                      children: [
+                                        Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      pickedImage = await picker
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .camera);
+                                                      if (pickedImage != null) {
+                                                       _photoETController.text= pickedImage!.name
+                                                            .replaceAll(
+                                                                pickedImage!
+                                                                    .name
+                                                                    .split('.')
+                                                                    .first,
+                                                                '${_lastNameETController.text.toLowerCase().trim()}_${DateTime.now()}');
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        width: 60,
+                                                        height: 60,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                Colors.black12,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: const Icon(
+                                                            CupertinoIcons
+                                                                .camera)),
+                                                  ),
+                                                  const Text('Camera')
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 60,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      pickedImage = await picker
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
+                                                      if (pickedImage != null) {
+                                                        _photoETController
+                                                                .text =
+                                                            pickedImage!.name
+                                                                .replaceAll(
+                                                                    pickedImage!
+                                                                        .name
+                                                                        .split(
+                                                                            '.')
+                                                                        .first,
+                                                                    '${_lastNameETController.text.toLowerCase().trim()}_${DateTime.now()}');
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        width: 60,
+                                                        height: 60,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                Colors.black12,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: const Icon(
+                                                            CupertinoIcons
+                                                                .photo)),
+                                                  ),
+                                                  const Text('Gallery')
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ));
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10))),
+                                child: const Center(
+                                    child: Text(
+                                  'Photo',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                                child: TextFormField(
+                              readOnly: true,
+                              enabled: false,
+                              controller: _photoETController,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)))),
+                            ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         AppTextFormField(
                           hintText: "First name",
                           prefixIcon: CupertinoIcons.person_alt_circle,
@@ -196,4 +334,6 @@ class SignInScreen extends GetView<SignInScreenController> {
           ),
         ));
   }
+
+
 }

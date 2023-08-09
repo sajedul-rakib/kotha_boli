@@ -1,12 +1,16 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kotha_boli/routes/route_name/route_names.dart';
+import 'package:kotha_boli/ui/screens/home_screen/home_screen.dart';
+import 'package:kotha_boli/ui/screens/splash_screen/index.dart';
 import 'package:kotha_boli/ui/screens/splash_screen/state.dart';
+import 'package:kotha_boli/user/user.dart';
 
 class SplashScreenController extends GetxController {
   final state = SplashScreenState();
+
+  bool userAreLoggedIn = false;
 
   SplashScreenController();
 
@@ -14,18 +18,4 @@ class SplashScreenController extends GetxController {
     state.index.value = index;
   }
 
-  Future<void> signInWithGoogle() async {
-    final response = await GoogleSignIn().signIn();
-
-    final googleAuth = await response?.authentication;
-    //create a new credential
-    if (googleAuth != null) {
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      FirebaseAuth.instance.signInWithCredential(credential);
-    }
-  }
 }

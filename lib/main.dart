@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kotha_boli/routes/route_name/route_names.dart';
 import 'package:kotha_boli/routes/route_pages/route.dart';
 import 'package:kotha_boli/shared/constrains.dart';
 import 'package:flutter/foundation.dart';
+import 'package:kotha_boli/user/user.dart';
 import 'package:kotha_boli/utils/colors/app_color/app_color.dart';
 
 Future<void> main() async {
@@ -25,12 +26,20 @@ Future<void> main() async {
 
 class KothaBoli extends StatelessWidget {
   const KothaBoli({super.key});
-
   @override
   Widget build(BuildContext context) {
     return  GetMaterialApp(
+      initialBinding: GetxBindigs(),
       debugShowCheckedModeBanner: false,
        theme: ThemeData(
+         appBarTheme: const AppBarTheme(
+           backgroundColor: Colors.transparent,
+           elevation: 0
+         ),
+         drawerTheme: const DrawerThemeData(
+           backgroundColor: Colors.black,
+           elevation: 0
+         ),
          fontFamily: GoogleFonts.lato().fontFamily,
          elevatedButtonTheme:   ElevatedButtonThemeData(
            style:  ButtonStyle(
@@ -44,11 +53,19 @@ class KothaBoli extends StatelessWidget {
          ),
 
        ),
-       initialRoute: RoutePages.INITIAL,
+       initialRoute: RouteNames.MAINBOTTOMNAVIGATION,
        getPages: RoutePages.routes,
        // home: const Scaffold(
        //   body: SplashScreen(),
        // ),
     );
   }
+}
+
+class GetxBindigs extends Bindings{
+  @override
+  void dependencies() {
+    Get.put(ConfigureStore());
+  }
+  
 }
