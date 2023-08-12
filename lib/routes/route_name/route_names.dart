@@ -27,4 +27,8 @@ class RouteNames {
   //find friend in route name
   static const String FRIENDREQUESTSCREEN = '/friend-request-screen';
 
+
+  //find friend in route name
+  static const String PROFILEIMAGEVIEWER = '/profile-image-viewer';
+
 }

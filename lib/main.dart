@@ -6,7 +6,6 @@ import 'package:kotha_boli/routes/route_name/route_names.dart';
 import 'package:kotha_boli/routes/route_pages/route.dart';
 import 'package:kotha_boli/shared/constrains.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kotha_boli/user/user.dart';
 import 'package:kotha_boli/utils/colors/app_color/app_color.dart';
 
 Future<void> main() async {
@@ -29,7 +28,7 @@ class KothaBoli extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  GetMaterialApp(
-      initialBinding: GetxBindigs(),
+      // initialBinding: GetxBindigs(),
       debugShowCheckedModeBanner: false,
        theme: ThemeData(
          appBarTheme: const AppBarTheme(
@@ -53,7 +52,7 @@ class KothaBoli extends StatelessWidget {
          ),
 
        ),
-       initialRoute: RouteNames.MAINBOTTOMNAVIGATION,
+       initialRoute: RouteNames.INITIAL,
        getPages: RoutePages.routes,
        // home: const Scaffold(
        //   body: SplashScreen(),
@@ -62,10 +61,10 @@ class KothaBoli extends StatelessWidget {
   }
 }
 
-class GetxBindigs extends Bindings{
-  @override
-  void dependencies() {
-    Get.put(ConfigureStore());
-  }
-  
-}
+// class GetxBindigs extends Bindings{
+//   @override
+//   void dependencies() {
+//     Get.put(ConfigureStore());
+//   }
+//
+// }

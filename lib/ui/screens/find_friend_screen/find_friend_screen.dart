@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../home_screen/image_url.dart';
+import 'package:kotha_boli/ui/screens/find_friend_screen/controller.dart';
 
-class FindFriendScreen extends StatelessWidget {
+class FindFriendScreen extends GetView<FindFriendController> {
   const FindFriendScreen({super.key});
 
   @override
@@ -39,7 +39,7 @@ class FindFriendScreen extends StatelessWidget {
       // ),
       body: SafeArea(
         child: ListView.builder(
-            itemCount: 10,
+            itemCount:  0,
             itemBuilder: (context, index) {
               return Padding(
                 padding:
@@ -50,15 +50,15 @@ class FindFriendScreen extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text(
-                                "Sent a friend request"),
+                            title: const Text("Sent a friend request"),
                             titleTextStyle: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
-                            fontSize: 20),
+                                fontSize: 20),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+
                                 Row(
                                   children: [
                                     ElevatedButton(
@@ -104,10 +104,9 @@ class FindFriendScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   tileColor: Colors.black12,
                   leading: const CircleAvatar(
-                    backgroundImage: NetworkImage(ImageUrl.profileImage),
+                    child: Icon(Icons.person),
                   ),
-                  title: const Text(
-                    'Sajedul Islam Rakib',
+                  title:  const Text('Rakib',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                 ),

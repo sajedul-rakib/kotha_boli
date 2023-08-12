@@ -1,15 +1,18 @@
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kotha_boli/store/save_user_data.dart';
 
 import '../../../routes/route_name/route_names.dart';
 
-
 class SideDrawer extends StatelessWidget {
   const SideDrawer({
-    super.key,
+    super.key,required  this.userDetails,
   });
+
+  final Map<String,dynamic> userDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +26,17 @@ class SideDrawer extends StatelessWidget {
                 image: DecorationImage(
                     image: NetworkImage(
                         'https://us.123rf.com/450wm/azatvaleev/azatvaleev2110/azatvaleev211000001/175335301-mountains-range-morning-or-evening-landscape-with-fog-and-forest-sunrise-and-sunset-in-mountain.jpg?ver=6'))),
-            accountName: const Text(
-              "Sajedul Islam Rakib",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            accountName:  Text(
+              "${userDetails['name']}",
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
-            accountEmail: const Text(
-              'rakib.tori@gmail.com',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            accountEmail:  Text(
+              '${userDetails['email']}',
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                    'https://media.licdn.com/dms/image/D5603AQENVaTPniWHCw/profile-displayphoto-shrink_800_800/0/1676607876819?e=2147483647&v=beta&t=pCayzrQSSGrLH9dYJaXLQSLQU6_A_CENPgTubUX89VE'),
+                child: Image.network(userDetails['photoUrl']),
               ),
             ),
           ),
@@ -122,7 +124,12 @@ class SideDrawer extends StatelessWidget {
             color: Colors.black45,
           ),
           const ListTile(
-            leading: CircleAvatar(backgroundColor:Colors.black12,child: Icon(CupertinoIcons.settings,color: Colors.black45,)),
+            leading: CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(
+                  CupertinoIcons.settings,
+                  color: Colors.black45,
+                )),
             title: Text(
               "Settings",
               style: TextStyle(
@@ -132,7 +139,12 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           const ListTile(
-            leading: CircleAvatar(backgroundColor:Colors.black12,child: Icon(CupertinoIcons.share,color: Colors.black45,)),
+            leading: CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(
+                  CupertinoIcons.share,
+                  color: Colors.black45,
+                )),
             title: Text(
               "Share",
               style: TextStyle(
@@ -142,7 +154,12 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           const ListTile(
-            leading: CircleAvatar(backgroundColor:Colors.black12,child: Icon(CupertinoIcons.doc_plaintext,color: Colors.black45,)),
+            leading: CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(
+                  CupertinoIcons.doc_plaintext,
+                  color: Colors.black45,
+                )),
             title: Text(
               "Report",
               style: TextStyle(
@@ -155,9 +172,18 @@ class SideDrawer extends StatelessWidget {
             thickness: 1,
             color: Colors.black45,
           ),
-          const ListTile(
-            leading: CircleAvatar(backgroundColor: Colors.black12,child: Icon(Icons.logout,color: Colors.black45,)),
-            title: Text(
+          ListTile(
+            onTap: () {
+              Future.delayed(const Duration(seconds: 2))
+                  .then((value) => SaveUserData().logoutUser());
+            },
+            leading: const CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(
+                  Icons.logout,
+                  color: Colors.black45,
+                )),
+            title: const Text(
               "Exit",
               style: TextStyle(
                   fontSize: 16,

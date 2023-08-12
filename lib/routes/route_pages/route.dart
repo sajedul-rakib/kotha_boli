@@ -1,6 +1,7 @@
 import 'package:kotha_boli/middlewares/splash_screen_middlewares.dart';
 import 'package:kotha_boli/routes/route_name/route_names.dart';
 import 'package:get/get.dart';
+import 'package:kotha_boli/ui/screens/chat_screen/image_view.dart';
 import 'package:kotha_boli/ui/screens/chat_screen/index.dart';
 import 'package:kotha_boli/ui/screens/contact/bindings.dart';
 import 'package:kotha_boli/ui/screens/contact/contact_screen.dart';
@@ -52,7 +53,7 @@ class RoutePages {
     //chat  screen
     GetPage(
         name: RouteNames.CHATSCREEN,
-        page: () => const ChatScreen(),
+        page: () =>  ChatScreen(),
         binding: ChatScreenBindings()),
 
     //contact screen
@@ -71,7 +72,12 @@ class RoutePages {
     GetPage(
         name: RouteNames.FRIENDREQUESTSCREEN,
         page: () => const FriendRequestScreen(),
-        binding: FriendRequestBindings())
+        binding: FriendRequestBindings()),
+
+    GetPage(
+        name: RouteNames.PROFILEIMAGEVIEWER,
+        page: () => const ProfileImageView(),
+    )
 
   ];
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kotha_boli/routes/route_name/route_names.dart';
 import 'package:kotha_boli/ui/screens/home_screen/controller.dart';
-import 'package:kotha_boli/ui/screens/home_screen/image_url.dart';
 
 import '../widgets/side_drawer.dart';
 
@@ -11,11 +10,10 @@ class HomeScreen extends GetView<HomeScreenController> {
   HomeScreen({super.key});
 
   final TextEditingController _findFriendETController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const SideDrawer(),
+      drawer:  SideDrawer(userDetails: controller.userDetails,),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -38,7 +36,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                               SearchBar(
                                 controller: _findFriendETController,
                                 leading: const Icon(CupertinoIcons.person_2),
-                                hintText: "Enter your friends email / name",
+                                hintText: "Enter your friends email",
                                 elevation: const MaterialStatePropertyAll(0),
                                 shape: const MaterialStatePropertyAll(
                                     RoundedRectangleBorder(
@@ -79,13 +77,14 @@ class HomeScreen extends GetView<HomeScreenController> {
                                     onPressed: () {
                                       if (_findFriendETController
                                           .text.isNotEmpty) {
+                                        controller.findFriend(_findFriendETController.text.trim());
                                         Get.toNamed(
                                             RouteNames.FINDFRIENDSCREEN);
                                       } else {
                                         Get.showSnackbar(const GetSnackBar(
                                           title: "Error",
                                           message:
-                                              'Enter your friends email / name!',
+                                              'Enter your friends email!',
                                         ));
                                       }
                                     },
@@ -132,24 +131,10 @@ class HomeScreen extends GetView<HomeScreenController> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
+      body:  SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Container(
-              //   width: double.infinity,
-              //   height: 70,
-              //   color: Colors.transparent,
-              //   child: const Padding(
-              //     padding: EdgeInsets.symmetric(horizontal: 32),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //
-              //       ],
-              //     ),
-              //   ),
-              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -173,8 +158,19 @@ class HomeScreen extends GetView<HomeScreenController> {
               SizedBox(
                 width: double.infinity,
                 height: 575,
-                child: ListView.builder(
-                    itemCount: 10,
+                child: GetBuilder<HomeScreenController>(builder: (controller) {
+                return controller.friendsDetailModel.friends?.isEmpty ?? true? const Center(child: Text("You have no friends"),): RefreshIndicator(onRefresh: (){
+                  return  controller.getAllFriends();
+                }, child: controller.homeScreenInProgress
+                    ? const Center(
+                      child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: Colors.black45,
+                ),
+                    )
+                    : ListView.builder(
+                    itemCount:
+                    controller.friendsDetailModel.friends?.length ?? 0,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -182,7 +178,13 @@ class HomeScreen extends GetView<HomeScreenController> {
                         child: ListTile(
                           onTap: () {
                             Get.toNamed(
-                              RouteNames.CHATSCREEN,
+                                RouteNames.CHATSCREEN,
+                                parameters: {
+                                  "friendName":controller.friendsDetailModel.friends![index].name.toString(),
+                                  "friendId":controller.friendsDetailModel.friends![index].id.toString(),
+                                  "friendPhotoUrl":controller.friendsDetailModel.friends![index].photoUrl.toString(),
+                                  "userPhotoUrl":controller.userDetails['photoUrl'].toString()
+                                }
                             );
                           },
                           shape: OutlineInputBorder(
@@ -198,14 +200,13 @@ class HomeScreen extends GetView<HomeScreenController> {
                                         ? Colors.green
                                         : Colors.black26,
                                     width: 3.0)),
-                            child: const CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(ImageUrl.profileImage),
+                            child:  CircleAvatar(
+                              backgroundImage:NetworkImage(controller.friendsDetailModel.friends![index].photoUrl.toString()) ,
                             ),
                           ),
-                          title: const Text(
-                            'Sajedul Islam Rakib',
-                            style: TextStyle(
+                          title:  Text(
+                            controller.friendsDetailModel.friends![index].name.toString(),
+                            style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w700),
                           ),
                           subtitle: const Text('Hey! Sajedul How are you?'),
@@ -213,8 +214,8 @@ class HomeScreen extends GetView<HomeScreenController> {
                               '${DateTime.now().hour}:${DateTime.now().minute}'),
                         ),
                       );
-                    }),
-              )
+                    }));
+                },)),
             ],
           ),
         ),
@@ -222,5 +223,3 @@ class HomeScreen extends GetView<HomeScreenController> {
     );
   }
 }
-
-

@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kotha_boli/routes/route_name/route_names.dart';
+import 'package:kotha_boli/ui/screens/chat_screen/controller.dart';
+import 'package:kotha_boli/ui/screens/chat_screen/image_view.dart';
 import 'package:kotha_boli/ui/screens/home_screen/controller.dart';
 
-import '../home_screen/image_url.dart';
+class ChatScreen extends GetView<ChatScreenController> {
+  ChatScreen({super.key});
 
-class ChatScreen extends GetView<HomeScreenController> {
-  const ChatScreen({super.key});
+  final TextEditingController _messageETController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,11 @@ class ChatScreen extends GetView<HomeScreenController> {
               child: Column(
                 children: [
                   ListTile(
+                    onTap: () {
+                      Get.toNamed(RouteNames.PROFILEIMAGEVIEWER, parameters: {
+                        'photoUrl': Get.parameters['friendPhotoUrl']!
+                      });
+                    },
                     shape: const OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.only(
@@ -31,14 +41,15 @@ class ChatScreen extends GetView<HomeScreenController> {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.green, width: 3.0)),
-                      child: const CircleAvatar(
-                        backgroundImage: NetworkImage(ImageUrl.profileImage),
+                      child: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(Get.parameters['friendPhotoUrl']!),
                       ),
                     ),
-                    title: const Text(
-                      'Sajedul Islam Rakib',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                    title: Text(
+                      '${Get.parameters['friendName']}',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w700),
                     ),
                     subtitle: const Text(
                       "Online",
@@ -49,67 +60,72 @@ class ChatScreen extends GetView<HomeScreenController> {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Bubble(
-                      stick: true,
-                      alignment: Alignment.topRight,
-                      nip: BubbleNip.rightBottom,
-                      color: const Color.fromRGBO(212, 234, 244, 1.0),
-                      child: const Text(
-                        "Hello",
-                        style: TextStyle(fontSize: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Bubble(
+                        stick: true,
+                        alignment: Alignment.topRight,
+                        nip: BubbleNip.rightBottom,
+                        color: const Color.fromRGBO(212, 234, 244, 1.0),
+                        child: const Text(
+                          "Hello",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(ImageUrl.profileImage),
+                      const SizedBox(
+                        width: 5,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(ImageUrl.profileImage),
+                      SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(Get.parameters['userPhotoUrl']!),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Bubble(
-                      stick: true,
-                      alignment: Alignment.topRight,
-                      nip: BubbleNip.leftBottom,
-                      color: const Color.fromRGBO(212, 234, 244, 1.0),
-                      child: const Text(
-                        "How are you?",
-                        style: TextStyle(fontSize: 18),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(Get.parameters['friendPhotoUrl']!),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Bubble(
+                        stick: true,
+                        alignment: Alignment.topRight,
+                        nip: BubbleNip.leftBottom,
+                        color: const Color.fromRGBO(212, 234, 244, 1.0),
+                        child: const Text(
+                          "How are you?",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
             ),
             Container(
               height: 70,
@@ -146,15 +162,28 @@ class ChatScreen extends GetView<HomeScreenController> {
                       width: 280,
                       height: 50,
                       child: TextField(
+                        controller: _messageETController,
                         decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
                             focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                     width: 1, color: Colors.black45),
                                 borderRadius: BorderRadius.circular(45)),
                             hintText: 'Message',
-                            suffixIcon: const Icon(
-                              CupertinoIcons.paperplane,
-                              color: Colors.black45,
+                            suffixIcon: InkWell(
+                              onTap: () {
+                                if(_messageETController.text.isNotEmpty){
+                                  controller.sentMsgToFriends(
+                                      message: _messageETController.text.trim(),
+                                      receiverId: Get.parameters['friendId']!.toString());
+                                  _messageETController.clear();
+                                }
+                              },
+                              child: const Icon(
+                                CupertinoIcons.paperplane,
+                                color: Colors.black45,
+                              ),
                             ),
                             border: OutlineInputBorder(
                                 borderSide: const BorderSide(

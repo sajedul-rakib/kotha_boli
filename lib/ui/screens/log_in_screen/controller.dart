@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kotha_boli/store/save_user_data.dart';
 import 'package:kotha_boli/ui/screens/log_in_screen/index.dart';
 import '../../../user/user.dart';
 
@@ -13,6 +14,7 @@ class LogInScreenController extends GetxController {
 
   final _googleSignIn = GoogleSignIn();
   final db = FirebaseFirestore.instance;
+   List<String> userFriends=[];
 
   LogInScreenController();
 
@@ -20,8 +22,7 @@ class LogInScreenController extends GetxController {
 
   Future<void> logIn({required String email, required String password}) async {
     try {
-      await auth
-          .signInWithEmailAndPassword(email: email, password: password);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       Get.showSnackbar(GetSnackBar(
         title: 'Log in failed',
@@ -54,10 +55,13 @@ class LogInScreenController extends GetxController {
         LogInUserResponseEntity userProfile = LogInUserResponseEntity();
         userProfile.displayName = displayName;
         userProfile.email = email;
-        userProfile.accessToken = id;
+        userProfile.id = id;
         userProfile.photoUrl = photoUrl;
 
-        ConfigureStore.to.saveProfile(userProfile);
+        SaveUserData.saveUserToken(id);
+        SaveUserData.saveUserData(userProfile);
+
+
 
         var userBase = await db
             .collection('users')
@@ -67,7 +71,6 @@ class LogInScreenController extends GetxController {
                     userData.toFireStore())
             .where('id', isEqualTo: id)
             .get();
-
         if (userBase.docs.isEmpty) {
           final data = UserData(
               id: id,
@@ -77,7 +80,7 @@ class LogInScreenController extends GetxController {
               location: '',
               fcmToken: '',
               friends: [],
-              addTime: Timestamp.now());
+              createAt: DateTime.now());
 
           await db
               .collection('users')
@@ -86,13 +89,14 @@ class LogInScreenController extends GetxController {
                   toFirestore: (UserData userData, options) =>
                       userData.toFireStore())
               .add(data);
-
         }
         return true;
       }
       return false;
-    } catch (e) {
+    }on FirebaseAuthException catch(e) {
+      log(e.message.toString());
       log(e.toString());
+      log(e.code.toString());
       return false;
     }
   }

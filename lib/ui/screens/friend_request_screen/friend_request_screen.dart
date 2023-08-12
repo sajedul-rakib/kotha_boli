@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../home_screen/image_url.dart';
 
 class FriendRequestScreen extends StatelessWidget {
   const FriendRequestScreen({super.key});
@@ -101,7 +100,7 @@ class FriendRequestScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 tileColor: Colors.black12,
                 leading: const CircleAvatar(
-                  backgroundImage: NetworkImage(ImageUrl.profileImage),
+                  child: Icon(CupertinoIcons.person),
                 ),
                 title: const Text(
                   'Sajedul Islam Rakib',

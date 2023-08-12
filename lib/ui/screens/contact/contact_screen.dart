@@ -34,7 +34,6 @@ class ContactScreen extends GetView<ContactScreenController> {
               ),
             ),
             const SizedBox(height: 20,),
-            const ListTile(leading: CircleAvatar(backgroundImage: NetworkImage(''),),)
           ],
         ),
       ),
